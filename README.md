@@ -327,3 +327,26 @@ Coverage is limited to **income loss from external environmental and social disr
 ---
 
 *The syndicates are getting smarter. GigShield is smarter.* 🛡️
+
+## Project Summary
+
+### Inspiration
+Inspired by the fragile income streams of millions of platform delivery partners in India and the frequency of extreme weather and social disruptions, we built GigShield to deliver a fast, automated safety net that pays workers instantly when real external events reduce their ability to earn.
+
+### What it does
+GigShield monitors environmental and social signals, automatically triggers parametric claims when thresholds are met, runs a sub-second AI anti-spoofing verification, and issues instant UPI payouts for approved claims — no paperwork required.
+
+### How we built it
+This is a lightweight web SPA (HTML/CSS/JS) with modular client-side engines for disruption monitoring, risk assessment, fraud detection, and claim orchestration. The repo demonstrates the full claim flow end-to-end with simulated APIs and clear module boundaries for easy backend integration.
+
+### Challenges we ran into
+Balancing aggressive fraud detection against protecting honest workers in noisy conditions (poor GPS, storms) was the hardest challenge. Integrating many weak signals into a robust FraudScore and designing humane appeal flows took most of our design and testing effort.
+
+### Accomplishments we're proud of
+We built a multi-signal anti-spoofing engine capable of detecting coordinated rings, an end-to-end parametric claim pipeline, and a demo UPI payout flow — while maintaining a low false-positive rate in our simulated runs.
+
+### What we learned
+Signal fusion and thoughtful weighting are essential: individual telemetry is noisy, but fused signals produce reliable decisions. UX and an easy appeals process are as important as algorithmic precision to retain worker trust.
+
+### What's next for GigShield
+Harden the server-side implementation, add a mobile SDK for richer telemetry, integrate with sandboxed payout providers, and set up CI/CD and automated tests to move from prototype to production.
