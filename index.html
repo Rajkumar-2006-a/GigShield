@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GigShield – AI-Powered Parametric Insurance for Gig Workers | Guidewire DEVTrails 2026</title>
+  <meta name="description" content="GigShield protects India's 50M+ delivery partners from income loss due to extreme weather, pollution, and social disruptions. AI-powered parametric insurance with instant payouts and advanced anti-spoofing."/>
+  <link rel="stylesheet" href="index.css"/>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <a class="nav-brand" href="#" onclick="showPage('dashboard')">
+    <div class="nav-logo">🛡️</div>
+    <span class="nav-title">Gig<span>Shield</span></span>
+  </a>
+  <div class="nav-links">
+    <button class="nav-link active" id="nav-dashboard" onclick="showPage('dashboard')">Dashboard</button>
+    <button class="nav-link" id="nav-enroll"    onclick="showPage('enroll')">Enroll</button>
+    <button class="nav-link" id="nav-claims"    onclick="showPage('claims')">Claims</button>
+    <button class="nav-link" id="nav-analytics" onclick="showPage('analytics')">Analytics</button>
+    <button class="nav-link" id="nav-defense"   onclick="showPage('defense')">🔒 Anti-Spoof</button>
+  </div>
+  <div class="nav-badge">
+    <span class="badge-dot"></span>
+    <span id="nav-alert-text">3 alerts live</span>
+  </div>
+</nav>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PAGE 1: DASHBOARD
+══════════════════════════════════════════════════════════════ -->
+<div class="page active" id="page-dashboard">
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-badge">🇮🇳 DEVTrails 2026 · Guidewire University Hackathon</div>
+    <h1 class="hero-title">
+      Protecting India's<br/>
+      <span class="highlight">Gig Workers</span> in Real-Time
+    </h1>
+    <p class="section-subtitle">AI-powered parametric income protection for delivery partners. When extreme weather or disruptions strike, GigShield pays automatically — no paperwork, no delays.</p>
+    <div class="flex gap-2 flex-wrap mt-2">
+      <button class="btn btn-primary btn-lg" onclick="showPage('enroll')">🚀 Get Insured – ₹49/week</button>
+      <button class="btn btn-outline btn-lg" onclick="showPage('analytics')">📊 View Analytics</button>
+    </div>
+  </div>
+
+  <!-- Live Stats -->
+  <div class="stats-grid">
+    <div class="stat-card" style="--card-accent: var(--primary)">
+      <div class="stat-label">Active Policies</div>
+      <div class="stat-value" id="stat-policies">2,847</div>
+      <div class="stat-delta delta-up">↑ 12% this week</div>
+    </div>
+    <div class="stat-card" style="--card-accent: var(--success)">
+      <div class="stat-label">Payouts Processed</div>
+      <div class="stat-value" id="stat-payouts">₹18.4L</div>
+      <div class="stat-delta delta-up">↑ 34% this month</div>
+    </div>
+    <div class="stat-card" style="--card-accent: var(--danger)">
+      <div class="stat-label">Fraud Prevented</div>
+      <div class="stat-value" id="stat-fraud">₹3.2L</div>
+      <div class="stat-delta delta-up">↑ 8 rings detected</div>
+    </div>
+    <div class="stat-card" style="--card-accent: var(--warning)">
+      <div class="stat-label">Avg Payout Time</div>
+      <div class="stat-value">2.1min</div>
+      <div class="stat-delta delta-up">⚡ Instant UPI</div>
+    </div>
+    <div class="stat-card" style="--card-accent: var(--accent)">
+      <div class="stat-label">Cities Covered</div>
+      <div class="stat-value">6</div>
+      <div class="stat-delta delta-up">Mumbai · Delhi · BLR+</div>
+    </div>
+    <div class="stat-card" style="--card-accent: var(--primary)">
+      <div class="stat-label">Platform Claim UR</div>
+      <div class="stat-value">94.2%</div>
+      <div class="stat-delta delta-up">↑ 99.1% satisfaction</div>
+    </div>
+  </div>
+
+  <!-- Live Disruption Monitor -->
+  <div class="card mb-3">
+    <div class="flex items-center justify-between mb-2">
+      <div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;">🌧️ Live Disruption Monitor</h2>
+        <p class="text-sm text-muted mt-1">Real-time parametric triggers across active zones</p>
+      </div>
+      <div class="flex gap-2">
+        <span class="badge badge-danger">3 Active Triggers</span>
+        <button class="btn btn-sm btn-outline" onclick="refreshWeather()">↻ Refresh</button>
+      </div>
+    </div>
+    <div class="weather-strip" id="weather-strip">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- Map + Activity Feed -->
+  <div class="grid-2 mb-3">
+    <!-- Zone Map -->
+    <div class="card">
+      <div class="flex items-center justify-between mb-2">
+        <h3 style="font-weight:700;">📍 Zone Risk Map</h3>
+        <span class="badge badge-neutral">Live</span>
+      </div>
+      <div class="map-container">
+        <div class="map-grid"></div>
+        <!-- Mumbai pins -->
+        <div class="map-cluster danger" style="left:32%;top:55%;" title="Bandra – 38 claims" onclick="showToast('danger','🔴 Bandra Zone: Extreme rainfall 68mm/3hr. 38 auto-claims triggered.')">38</div>
+        <div class="map-cluster warning" style="left:45%;top:40%;" title="Andheri – 21 claims" onclick="showToast('warning','🟡 Andheri Zone: Heavy rain 45mm/3hr. 21 claims pending verification.')">21</div>
+        <div class="map-cluster safe"    style="left:62%;top:65%;" title="Thane – 0 triggers" onclick="showToast('success','🟢 Thane Zone: Conditions normal. No active triggers.')">OK</div>
+        <!-- Delhi AQI pins -->
+        <div class="map-cluster danger"  style="left:74%;top:22%;" title="Delhi South – AQI 412" onclick="showToast('danger','🔴 Delhi South: AQI 412. Extreme heat 46°C. 54 auto-claims initiated.')">54</div>
+        <div class="map-cluster warning" style="left:82%;top:35%;" title="Delhi North – AQI 380" onclick="showToast('warning','🟡 Delhi North: AQI 380. 18 claims flagged for review.')">18</div>
+        <!-- Sindicate alert -->
+        <div class="map-pin" style="left:38%;top:55%;" title="Fraud Ring Detected" onclick="showToast('danger','⚠️ FRAUD RING ALERT: 12 workers submitting claims from identical GPS coordinates in Dharavi area.')">🚨</div>
+        <div style="position:absolute;bottom:0.7rem;left:0.7rem;font-size:0.7rem;color:var(--text-muted);">Click zones for details · 🚨 = fraud alert</div>
+      </div>
+    </div>
+
+    <!-- Activity Feed -->
+    <div class="card">
+      <div class="flex items-center justify-between mb-3">
+        <h3 style="font-weight:700;">⚡ Live Activity Feed</h3>
+        <span class="badge badge-info">Auto-updating</span>
+      </div>
+      <div class="timeline" id="activity-feed">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Claims Status Overview -->
+  <div class="card mb-3">
+    <div class="flex items-center justify-between mb-3">
+      <h3 style="font-weight:700;">📋 Recent Claims</h3>
+      <button class="btn btn-sm btn-outline" onclick="showPage('claims')">View All →</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Claim ID</th><th>Worker</th><th>Platform</th><th>Trigger</th><th>Amount</th><th>Fraud Score</th><th>Status</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="recent-claims-table">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PAGE 2: ENROLL
+══════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-enroll">
+<div class="container">
+  <div class="hero">
+    <h1 class="section-title">Enroll a Gig Worker</h1>
+    <p class="section-subtitle">Register a delivery partner and select their weekly income protection plan. KYC takes under 2 minutes.</p>
+  </div>
+
+  <div class="grid-2">
+    <!-- Registration Form -->
+    <div class="card">
+      <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:1.5rem;">👤 Worker Registration</h3>
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input class="form-input" id="f-name" type="text" placeholder="e.g. Rahul Sharma"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number (UPI linked)</label>
+        <input class="form-input" id="f-phone" type="tel" placeholder="+91 9876543210"/>
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label" for="f-platform">Platform</label>
+          <select class="form-select" id="f-platform" onchange="updatePremium()">
+            <option value="swiggy">Swiggy</option>
+            <option value="zomato">Zomato</option>
+            <option value="zepto">Zepto</option>
+            <option value="amazon">Amazon Flex</option>
+            <option value="dunzo">Dunzo</option>
+            <option value="blinkit">Blinkit</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-vehicle">Vehicle</label>
+          <select class="form-select" id="f-vehicle" onchange="updatePremium()">
+            <option value="bike">Bike</option>
+            <option value="cycle">Bicycle</option>
+            <option value="foot">On Foot</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label" for="f-city">City</label>
+          <select class="form-select" id="f-city" onchange="updatePremium()">
+            <option value="mumbai">Mumbai</option>
+            <option value="delhi">Delhi</option>
+            <option value="bengaluru">Bengaluru</option>
+            <option value="hyderabad">Hyderabad</option>
+            <option value="chennai">Chennai</option>
+            <option value="pune">Pune</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Avg Weekly Earnings (₹)</label>
+          <input class="form-input" id="f-earnings" type="number" value="3500" min="500" max="20000" oninput="updatePremium()"/>
+        </div>
+      </div>
+
+      <div class="alert alert-info mb-2" style="font-size:0.8rem;">
+        🔐 <strong>Device fingerprinting</strong> and <strong>video KYC</strong> will be completed on the worker's mobile app post-registration. This ensures anti-spoofing compliance from day 1.
+      </div>
+      <button class="btn btn-primary w-full" onclick="enrollWorker()">✅ Register & Continue to Plan Selection</button>
+    </div>
+
+    <!-- Premium Calculator -->
+    <div>
+      <div class="card mb-2">
+        <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:1rem;">💰 Dynamic Premium Calculator</h3>
+        <div style="text-align:center;padding:1rem 0;" id="premium-display">
+          <div style="color:var(--text-muted);font-size:0.8rem;">Select plan tier below</div>
+        </div>
+        <div class="divider"></div>
+        <div id="risk-breakdown" style="font-size:0.8rem;color:var(--text-secondary);"></div>
+      </div>
+
+      <!-- Plan Tiers -->
+      <div id="plan-cards" style="display:flex;flex-direction:column;gap:1rem;">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PAGE 3: CLAIMS
+══════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-claims">
+<div class="container">
+  <div class="hero">
+    <h1 class="section-title">Claims Management</h1>
+    <p class="section-subtitle">AI-verified parametric claims with real-time fraud detection. Every claim scored across 20+ signals.</p>
+  </div>
+
+  <!-- Parametric Claim Flow -->
+  <div class="card mb-3">
+    <h3 style="font-weight:700;margin-bottom:1.5rem;">⚡ Automated Claim Journey</h3>
+    <div class="claim-flow">
+      <div class="flow-step">
+        <div class="flow-icon done">🌧️</div>
+        <div class="flow-label">Disruption Detected</div>
+        <div class="flow-sub">Weather/AQI/Social API trigger</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon done">📡</div>
+        <div class="flow-label">Zone Verification</div>
+        <div class="flow-sub">GPS + zone polygon match</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon active">🤖</div>
+        <div class="flow-label">AI Fraud Scan</div>
+        <div class="flow-sub">20+ signals in &lt;1 sec</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">✅</div>
+        <div class="flow-label">Auto-Approved</div>
+        <div class="flow-sub">Score &lt; 20 → instant payout</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">💸</div>
+        <div class="flow-label">UPI Transfer</div>
+        <div class="flow-sub">Avg 2.1 min to wallet</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Claims Stats -->
+  <div class="stats-grid mb-3">
+    <div class="stat-card" style="--card-accent:var(--success)"><div class="stat-label">Auto-Approved</div><div class="stat-value">1,842</div><div class="stat-delta delta-up">↑ Instant payout</div></div>
+    <div class="stat-card" style="--card-accent:var(--warning)"><div class="stat-label">Under Review</div><div class="stat-value">47</div><div class="stat-delta">Human review queue</div></div>
+    <div class="stat-card" style="--card-accent:var(--danger)"><div class="stat-label">Rejected (Fraud)</div><div class="stat-value">128</div><div class="stat-delta delta-up">₹3.2L saved</div></div>
+    <div class="stat-card" style="--card-accent:var(--primary)"><div class="stat-label">Pending Trigger</div><div class="stat-value">312</div><div class="stat-delta">Awaiting API confirm</div></div>
+  </div>
+
+  <!-- Fraud Analyzer Tool -->
+  <div class="grid-2 mb-3">
+    <div class="card">
+      <h3 style="font-weight:700;margin-bottom:1rem;">🔬 Claim Fraud Analyzer</h3>
+      <div class="form-group">
+        <label class="form-label" for="analyze-id">Claim ID or Worker ID</label>
+        <input class="form-input" id="analyze-id" type="text" placeholder="CLM-1711234567-abc123"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="an-gps-acc">GPS Accuracy (meters)</label>
+        <input class="form-input" id="an-gps-acc" type="number" value="45" min="1" max="500"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="an-gps-static">Location Unchanged (minutes)</label>
+        <input class="form-input" id="an-gps-static" type="number" value="5" min="0" max="120"/>
+      </div>
+      <div class="flex gap-2 mb-2">
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;cursor:pointer;">
+          <input type="checkbox" id="an-mock-gps" style="accent-color:var(--primary)"/> Mock Location Enabled
+        </label>
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;cursor:pointer;">
+          <input type="checkbox" id="an-vpn" style="accent-color:var(--primary)"/> VPN Active
+        </label>
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;cursor:pointer;">
+          <input type="checkbox" id="an-root" style="accent-color:var(--primary)"/> Rooted Device
+        </label>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="an-orders">Active Orders at Claim Time</label>
+        <input class="form-input" id="an-orders" type="number" value="2" min="0" max="10"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="an-battery">Battery %</label>
+        <input class="form-input" id="an-battery" type="number" value="65" min="0" max="100"/>
+      </div>
+      <button class="btn btn-primary w-full" onclick="runFraudAnalysis()">🔍 Run Fraud Analysis</button>
+    </div>
+
+    <!-- Analysis Result -->
+    <div class="card" id="fraud-result-card">
+      <h3 style="font-weight:700;margin-bottom:1rem;">📊 Analysis Result</h3>
+      <div id="fraud-result-content">
+        <div style="color:var(--text-muted);text-align:center;padding:3rem 1rem;">
+          <div style="font-size:3rem;margin-bottom:1rem;">🤖</div>
+          <div>Run the analyzer to see fraud scoring results</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- All Claims Table -->
+  <div class="card">
+    <div class="flex items-center justify-between mb-3">
+      <h3 style="font-weight:700;">All Claims</h3>
+      <div class="flex gap-2">
+        <select class="form-select" style="width:auto;padding:0.4rem 0.8rem;" id="claim-filter" aria-label="Filter claims by status" onchange="filterClaims()">
+          <option value="all">All Status</option>
+          <option value="approved">Approved</option>
+          <option value="under_review">Under Review</option>
+          <option value="rejected">Rejected</option>
+        </select>
+        <button class="btn btn-sm btn-accent" onclick="triggerAutoClaim()">⚡ Trigger Auto-Claim</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Claim ID</th><th>Worker</th><th>City/Zone</th><th>Event</th><th>Amount</th><th>Fraud Score</th><th>GPS Spoof</th><th>Status</th></tr>
+        </thead>
+        <tbody id="all-claims-table"><!-- JS --></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PAGE 4: ANALYTICS
+══════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-analytics">
+<div class="container">
+  <div class="hero">
+    <h1 class="section-title">Platform Analytics</h1>
+    <p class="section-subtitle">Risk trends, payout efficiency, fraud intelligence and pricing insights across India's gig economy.</p>
+  </div>
+
+  <!-- KPI Row -->
+  <div class="stats-grid mb-3">
+    <div class="stat-card" style="--card-accent:var(--primary)"><div class="stat-label">Loss Ratio</div><div class="stat-value">67.3%</div><div class="stat-delta delta-up">↓ 3.2% vs last month</div></div>
+    <div class="stat-card" style="--card-accent:var(--accent)"><div class="stat-label">Premium Collected</div><div class="stat-value">₹28.4L</div><div class="stat-delta delta-up">↑ 22% MoM</div></div>
+    <div class="stat-card" style="--card-accent:var(--success)"><div class="stat-label">Claims Paid</div><div class="stat-value">₹19.1L</div><div class="stat-delta delta-up">2,017 workers paid</div></div>
+    <div class="stat-card" style="--card-accent:var(--danger)"><div class="stat-label">Fraud Prevented</div><div class="stat-value">₹3.2L</div><div class="stat-delta delta-up">128 claims stopped</div></div>
+  </div>
+
+  <div class="grid-2 mb-3">
+    <!-- Risk by City -->
+    <div class="card">
+      <h3 style="font-weight:700;margin-bottom:1.2rem;">🏙️ Risk Index by City</h3>
+      <div id="city-bars">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Disruption Breakdown -->
+    <div class="card">
+      <h3 style="font-weight:700;margin-bottom:1.2rem;">⚡ Disruption Type Breakdown</h3>
+      <div id="disruption-breakdown"><!-- JS --></div>
+    </div>
+  </div>
+
+  <!-- Seasonal Premium Chart (visual bars) -->
+  <div class="card mb-3">
+    <h3 style="font-weight:700;margin-bottom:1.2rem;">📈 Monthly Risk Multiplier (Seasonal Trend)</h3>
+    <div style="display:flex;align-items:flex-end;gap:0.5rem;height:180px;padding:0 0.5rem;" id="seasonal-bars">
+      <!-- JS -->
+    </div>
+    <div style="display:flex;gap:0.5rem;margin-top:0.5rem;" id="seasonal-labels"><!-- JS --></div>
+  </div>
+
+  <!-- Platform Distribution -->
+  <div class="card">
+    <h3 style="font-weight:700;margin-bottom:1.2rem;">📦 Policy Distribution by Platform</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Platform</th><th>Active Policies</th><th>Claims Filed</th><th>Avg Premium/week</th><th>Fraud Rate</th><th>Satisfaction</th></tr></thead>
+        <tbody id="platform-table"><!-- JS --></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PAGE 5: ANTI-SPOOF / ADVERSARIAL DEFENSE
+══════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-defense">
+<div class="container">
+  <div class="hero">
+    <div class="hero-badge" style="border-color:rgba(255,71,87,0.3);background:rgba(255,71,87,0.1);color:var(--danger);">⚔️ Adversarial Defense & Anti-Spoofing Strategy</div>
+    <h1 class="section-title">Outsmarting the Syndicate</h1>
+    <p class="section-subtitle">A sophisticated GPS-spoofing fraud ring of 500 delivery workers just drained a competing platform. Here's how GigShield fights back — and protects honest workers in the same breath.</p>
+  </div>
+
+  <!-- Crisis Banner -->
+  <div class="alert alert-danger mb-3">
+    🚨 <div>
+      <strong>ACTIVE THREAT:</strong> Coordinated fraud ring of 500 workers detected via Telegram metadata analysis in Mumbai's Bandra zone. They use advanced GPS spoofing apps to fake severe weather locations while claiming from home. GigShield's multi-layer defense caught 94% of fraudulent claims in real-time.
+    </div>
+  </div>
+
+  <!-- 3 Core Pillars -->
+  <div class="grid-3 mb-3">
+    <div class="card glow">
+      <div style="font-size:2.5rem;margin-bottom:0.8rem;">🧠</div>
+      <h3 style="font-weight:700;margin-bottom:0.5rem;color:var(--primary);">Differentiation</h3>
+      <p class="text-sm text-muted">How AI distinguishes genuinely stranded workers from GPS-spoofing bad actors</p>
+    </div>
+    <div class="card glow" style="--shadow-glow:0 0 30px rgba(255,71,87,0.2);">
+      <div style="font-size:2.5rem;margin-bottom:0.8rem;">📡</div>
+      <h3 style="font-weight:700;margin-bottom:0.5rem;color:var(--danger);">The Data</h3>
+      <p class="text-sm text-muted">20+ signal types beyond GPS to detect coordinated fraud rings</p>
+    </div>
+    <div class="card glow" style="--shadow-glow:0 0 30px rgba(0,212,170,0.2);">
+      <div style="font-size:2.5rem;margin-bottom:0.8rem;">⚖️</div>
+      <h3 style="font-weight:700;margin-bottom:0.5rem;color:var(--accent);">UX Balance</h3>
+      <p class="text-sm text-muted">Flagged claims handled fairly, protecting genuine workers with network issues</p>
+    </div>
+  </div>
+
+  <!-- PILLAR 1: DIFFERENTIATION -->
+  <div class="card mb-3">
+    <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1.5rem;">
+      <div style="width:40px;height:40px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">1</div>
+      <div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;">How We Differentiate: Genuine vs Spoofer</h2>
+        <p class="text-sm text-muted">Multi-modal AI fusion across device, behavioral, and environmental signals</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <div class="mb-2" style="padding:1rem;background:rgba(46,213,115,0.05);border:1px solid rgba(46,213,115,0.2);border-radius:var(--radius-md);">
+          <h4 style="color:var(--success);font-weight:700;margin-bottom:0.8rem;">✅ Genuinely Stranded Worker Profile</h4>
+          <ul style="font-size:0.83rem;color:var(--text-secondary);display:flex;flex-direction:column;gap:0.5rem;list-style:none;">
+            <li>📍 GPS location shows movement history → shelter sought during storm</li>
+            <li>📱 Delivery app was in foreground for prior 2+ hours</li>
+            <li>🏃 Accelerometer data shows active movement before weather strike</li>
+            <li>📦 1–3 active/cancelled orders due to weather conditions</li>
+            <li>🔋 Battery at 30–60% (actively using phone for navigation)</li>
+            <li>📶 GPS accuracy degraded due to legitimate storm interference</li>
+            <li>⏱️ Claim filed 5–30 min after event trigger (human reaction time)</li>
+            <li>🌧️ Worker's platform shows deliveries dropped to zero in last hour</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="mb-2" style="padding:1rem;background:rgba(255,71,87,0.05);border:1px solid rgba(255,71,87,0.2);border-radius:var(--radius-md);">
+          <h4 style="color:var(--danger);font-weight:700;margin-bottom:0.8rem;">❌ GPS Spoofer / Fraud Actor Profile</h4>
+          <ul style="font-size:0.83rem;color:var(--text-secondary);display:flex;flex-direction:column;gap:0.5rem;list-style:none;">
+            <li>📍 GPS coordinates pinned to disrupted zone, but physically at home</li>
+            <li>📱 Mock Location API enabled (detected via Android permission flags)</li>
+            <li>🏠 GPS coordinates match registered home address within 50m</li>
+            <li>📦 0 active delivery orders — not working, just claiming</li>
+            <li>🔋 Battery at 90–100% (hasn't been delivering all day)</li>
+            <li>📡 GPS accuracy is 200m+ (spoofing app limitation)</li>
+            <li>⏱️ Claims filed within 60 sec of trigger (automated bot behavior)</li>
+            <li>🚨 50+ workers in the same Telegram group submitting simultaneously</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:1.2rem;padding:1rem;background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.2);border-radius:var(--radius-md);">
+      <h4 style="font-weight:700;color:var(--primary);margin-bottom:0.6rem;">🤖 AI Fusion Logic</h4>
+      <p class="text-sm text-muted">GigShield's ML model combines three detection layers into a single <strong style="color:var(--text-primary);">FraudScore (0–100)</strong>:</p>
+      <div class="grid-3 mt-2" style="gap:0.75rem;">
+        <div style="padding:0.8rem;background:var(--bg-input);border-radius:var(--radius-sm);font-size:0.8rem;">
+          <div style="font-weight:700;color:var(--primary);margin-bottom:0.3rem;">Layer 1: GPS Analysis (40%)</div>
+          Mock location detection, coordinate clustering, accuracy analysis, movement trajectory reconstruction
+        </div>
+        <div style="padding:0.8rem;background:var(--bg-input);border-radius:var(--radius-sm);font-size:0.8rem;">
+          <div style="font-weight:700;color:var(--warning);margin-bottom:0.3rem;">Layer 2: Behavioral AI (35%)</div>
+          Accelerometer patterns, screen-on time, delivery app foreground time, order activity, claim timing velocity
+        </div>
+        <div style="padding:0.8rem;background:var(--bg-input);border-radius:var(--radius-sm);font-size:0.8rem;">
+          <div style="font-weight:700;color:var(--danger);margin-bottom:0.3rem;">Layer 3: Syndicate Detection (25%)</div>
+          Mass submission wave analysis, GPS cluster identification, device fingerprint sharing, referral chain tracking
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PILLAR 2: THE DATA -->
+  <div class="card mb-3">
+    <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1.5rem;">
+      <div style="width:40px;height:40px;background:linear-gradient(135deg,var(--danger),var(--warning));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">2</div>
+      <div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;">The Data: 20+ Signals Beyond GPS</h2>
+        <p class="text-sm text-muted">Our fraud model consumes a rich telemetry stream from the GigShield mobile app</p>
+      </div>
+    </div>
+
+    <div class="grid-2 mb-2">
+      <div>
+        <h4 style="font-weight:600;margin-bottom:0.8rem;color:var(--text-secondary);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.06em;">📱 Device-Level Signals</h4>
+        <div class="table-wrap">
+          <table style="font-size:0.8rem;">
+            <thead><tr><th>Signal</th><th>Fraud Indicator</th><th>Weight</th></tr></thead>
+            <tbody>
+              <tr><td>Mock Location API</td><td>Enabled = spoofer</td><td><span class="badge badge-danger">20pts</span></td></tr>
+              <tr><td>Root Access</td><td>Rooted device = spoof-ready</td><td><span class="badge badge-danger">18pts</span></td></tr>
+              <tr><td>Android Emulator</td><td>Emulator = fake device</td><td><span class="badge badge-danger">25pts</span></td></tr>
+              <tr><td>Shared Device ID</td><td>10+ accounts = farm</td><td><span class="badge badge-danger">20pts</span></td></tr>
+              <tr><td>VPN/Proxy Active</td><td>Hiding true location</td><td><span class="badge badge-warning">12pts</span></td></tr>
+              <tr><td>SIM Swap Recent</td><td>Evading bans</td><td><span class="badge badge-warning">10pts</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-weight:600;margin-bottom:0.8rem;color:var(--text-secondary);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.06em;">🧠 Behavioral + Pattern Signals</h4>
+        <div class="table-wrap">
+          <table style="font-size:0.8rem;">
+            <thead><tr><th>Signal</th><th>Fraud Indicator</th><th>Weight</th></tr></thead>
+            <tbody>
+              <tr><td>GPS Cluster (5+ workers)</td><td>Coordinated ring</td><td><span class="badge badge-danger">25pts</span></td></tr>
+              <tr><td>Submission Wave</td><td>50+ claims / 5 min</td><td><span class="badge badge-danger">22pts</span></td></tr>
+              <tr><td>GPS at Home Address</td><td>Claiming from home</td><td><span class="badge badge-danger">15pts</span></td></tr>
+              <tr><td>Zero Active Orders</td><td>Not actually working</td><td><span class="badge badge-warning">10pts</span></td></tr>
+              <tr><td>Accelerometer Idle</td><td>Physically stationary</td><td><span class="badge badge-warning">10pts</span></td></tr>
+              <tr><td>Claim &lt;90 sec post-trigger</td><td>Bot submission</td><td><span class="badge badge-warning">8pts</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:1rem;background:rgba(108,99,255,0.06);border:1px solid rgba(108,99,255,0.15);border-radius:var(--radius-md);font-size:0.83rem;color:var(--text-secondary);">
+      <strong style="color:var(--primary);">🌐 External Data Integration:</strong> GigShield cross-references real delivery platform APIs to verify active orders. 
+      It also analyzes Telegram-style metadata patterns (message timing bursts, group size anomalies) and correlates with known fraud network signatures — without accessing actual message content, preserving privacy.
+    </div>
+  </div>
+
+  <!-- PILLAR 3: UX BALANCE -->
+  <div class="card mb-3">
+    <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1.5rem;">
+      <div style="width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--success));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">3</div>
+      <div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;">The UX Balance: Fair for Genuine Workers</h2>
+        <p class="text-sm text-muted">How GigShield flags bad actors without punishing honest ones who have poor network or GPS in storms</p>
+      </div>
+    </div>
+
+    <div class="grid-2 mb-2">
+      <div>
+        <h4 style="font-weight:700;color:var(--accent);margin-bottom:1rem;">🛡️ Honest Worker Protections</h4>
+        <div style="display:flex;flex-direction:column;gap:0.8rem;">
+          <div style="padding:0.9rem;background:rgba(0,212,170,0.05);border:1px solid rgba(0,212,170,0.2);border-radius:var(--radius-md);">
+            <div style="font-weight:600;font-size:0.85rem;margin-bottom:0.3rem;">⛈️ Weather GPS Excuse</div>
+            <div class="text-sm text-muted">GPS inaccuracy during a verified storm → score auto-reduced. Storms genuinely degrade location signals.</div>
+          </div>
+          <div style="padding:0.9rem;background:rgba(0,212,170,0.05);border:1px solid rgba(0,212,170,0.2);border-radius:var(--radius-md);">
+            <div style="font-weight:600;font-size:0.85rem;margin-bottom:0.3rem;">🏠 Home = Safe Shelter Logic</div>
+            <div class="text-sm text-muted">If extreme weather blocks a zone, a worker going home is rational. System checks weather API — if confirmed extreme, home GPS is excused.</div>
+          </div>
+          <div style="padding:0.9rem;background:rgba(0,212,170,0.05);border:1px solid rgba(0,212,170,0.2);border-radius:var(--radius-md);">
+            <div style="font-weight:600;font-size:0.85rem;margin-bottom:0.3rem;">⭐ Veteran Trust Buffer</div>
+            <div class="text-sm text-muted">Workers with 12+ months, clean record, zero prior fraud flags → minor anomalies are tolerated (soft flag, not suspended).</div>
+          </div>
+          <div style="padding:0.9rem;background:rgba(0,212,170,0.05);border:1px solid rgba(0,212,170,0.2);border-radius:var(--radius-md);">
+            <div style="font-weight:600;font-size:0.85rem;margin-bottom:0.3rem;">📞 Appeal Within 24 Hours</div>
+            <div class="text-sm text-muted">Any flagged/rejected claim triggers a WhatsApp notification with a one-tap appeal link. Human review within 4 hours guaranteed.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-weight:700;color:var(--primary);margin-bottom:1rem;">📊 Decision Threshold System</h4>
+        <div style="display:flex;flex-direction:column;gap:0.7rem;">
+          <div style="padding:0.9rem;background:rgba(46,213,115,0.06);border:1px solid rgba(46,213,115,0.2);border-radius:var(--radius-md);">
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.3rem;">
+              <span style="font-weight:700;color:var(--success);font-size:0.85rem;">FraudScore 0–19</span>
+              <span class="badge badge-success">AUTO-APPROVED</span>
+            </div>
+            <div class="text-sm text-muted">Payout initiated immediately. No human review. UPI transfer within 2 min.</div>
+            <div class="progress-wrap mt-1"><div class="progress-bar progress-success" style="width:19%"></div></div>
+          </div>
+          <div style="padding:0.9rem;background:rgba(255,165,2,0.06);border:1px solid rgba(255,165,2,0.2);border-radius:var(--radius-md);">
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.3rem;">
+              <span style="font-weight:700;color:var(--warning);font-size:0.85rem;">FraudScore 20–49</span>
+              <span class="badge badge-warning">SOFT FLAG</span>
+            </div>
+            <div class="text-sm text-muted">Claim APPROVED with enhanced monitoring. Worker notified. Additional checks next 30 days.</div>
+            <div class="progress-wrap mt-1"><div class="progress-bar" style="width:49%;background:var(--warning)"></div></div>
+          </div>
+          <div style="padding:0.9rem;background:rgba(255,71,87,0.06);border:1px solid rgba(255,71,87,0.2);border-radius:var(--radius-md);">
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.3rem;">
+              <span style="font-weight:700;color:var(--danger);font-size:0.85rem;">FraudScore 50–74</span>
+              <span class="badge badge-danger">HUMAN REVIEW</span>
+            </div>
+            <div class="text-sm text-muted">Claim held for human investigator review. Worker alerted. Decision within 4 hours. Payout held, not denied yet.</div>
+            <div class="progress-wrap mt-1"><div class="progress-bar progress-danger" style="width:74%"></div></div>
+          </div>
+          <div style="padding:0.9rem;background:rgba(255,71,87,0.1);border:1px solid rgba(255,71,87,0.4);border-radius:var(--radius-md);">
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.3rem;">
+              <span style="font-weight:700;color:var(--danger);font-size:0.85rem;">FraudScore 75–100</span>
+              <span class="badge badge-danger">REJECTED</span>
+            </div>
+            <div class="text-sm text-muted">High-confidence fraud. Claim rejected. Policy flagged. Worker can still appeal — appeals investigated by senior team.</div>
+            <div class="progress-wrap mt-1"><div class="progress-bar progress-danger" style="width:100%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Syndicate Map -->
+  <div class="card mb-3">
+    <h3 style="font-weight:700;margin-bottom:1rem;">🕵️ Live Fraud Ring Intelligence</h3>
+    <div class="grid-2">
+      <div class="map-container" style="height:280px;">
+        <div class="map-grid"></div>
+        <div class="map-cluster danger" style="left:35%;top:50%;" onclick="showSyndicateDetail()">12</div>
+        <div class="map-cluster danger" style="left:38%;top:52%;" >8</div>
+        <div class="map-cluster danger" style="left:36%;top:48%;" >15</div>
+        <div class="map-cluster warning" style="left:55%;top:35%;" >7</div>
+        <div style="position:absolute;top:0.7rem;left:0.7rem;font-size:0.75rem;color:var(--danger);font-weight:600;">⚠️ 3 Coordinated Clusters Detected</div>
+        <div style="position:absolute;bottom:0.7rem;left:0.7rem;font-size:0.68rem;color:var(--text-muted);">Numbers = workers in GPS cluster · Click for detail</div>
+      </div>
+      <div>
+        <h4 style="font-weight:600;margin-bottom:0.8rem;">Detected Fraud Rings</h4>
+        <div style="display:flex;flex-direction:column;gap:0.7rem;">
+          <div style="padding:0.8rem;background:rgba(255,71,87,0.06);border:1px solid rgba(255,71,87,0.2);border-radius:var(--radius-md);">
+            <div class="flex items-center justify-between mb-1">
+              <span style="font-weight:700;font-size:0.85rem;">Ring #FR-001 · Dharavi, Mumbai</span>
+              <span class="badge badge-danger">35 members</span>
+            </div>
+            <div class="text-xs text-muted">All claims filed within 4-minute window • Same Telegram burst metadata • 12 devices in 50m cluster</div>
+            <div class="text-xs" style="color:var(--danger);margin-top:0.3rem;">₹87,500 exposure blocked</div>
+          </div>
+          <div style="padding:0.8rem;background:rgba(255,165,2,0.06);border:1px solid rgba(255,165,2,0.2);border-radius:var(--radius-md);">
+            <div class="flex items-center justify-between mb-1">
+              <span style="font-weight:700;font-size:0.85rem;">Ring #FR-002 · Lajpat Nagar, Delhi</span>
+              <span class="badge badge-warning">18 members</span>
+            </div>
+            <div class="text-xs text-muted">AQI claims while AQI is 380 — legitimate trigger, BUT all from same device farm</div>
+            <div class="text-xs" style="color:var(--warning);margin-top:0.3rem;">₹36,000 under investigation</div>
+          </div>
+          <div style="padding:0.8rem;background:rgba(255,71,87,0.06);border:1px solid rgba(255,71,87,0.2);border-radius:var(--radius-md);">
+            <div class="flex items-center justify-between mb-1">
+              <span style="font-weight:700;font-size:0.85rem;">Ring #FR-003 · Whitefield, Bengaluru</span>
+              <span class="badge badge-danger">22 members</span>
+            </div>
+            <div class="text-xs text-muted">Referral chain — all enrolled via same referral code, claimed within 7 days of sign-up</div>
+            <div class="text-xs" style="color:var(--danger);margin-top:0.3rem;">₹44,000 exposure blocked</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<script src="js/app.js"></script>
+</body>
+</html>

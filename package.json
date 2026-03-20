@@ -1,0 +1,16 @@
+{
+  "name": "gigshield",
+  "version": "1.0.0",
+  "description": "AI-Powered Parametric Insurance Platform for India's Gig Economy - Guidewire DEVTrails 2026",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["insurance", "gig-economy", "AI", "parametric", "fraud-detection"],
+  "author": "DEVTrails 2026 Team",
+  "license": "MIT",
+  "dependencies": {
+    "http": "0.0.1-security"
+  }
+}
